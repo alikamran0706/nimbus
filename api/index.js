@@ -1,20 +1,16 @@
 import dotenv from "dotenv";
+
 import path from "path";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import cors from "cors";
-import { fileURLToPath } from "url";
+import cors from "cors"
 
 import { connectDB } from "./db/connect.js";
 import routes from "./routes/index.js";
-import { errorHandler } from "./middleware/error-handler.js"; 
-
+import { errorHandler } from "./middleware/error-handler.js";
 dotenv.config();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -27,30 +23,33 @@ app.use(cookieParser());
 // Mount API under /api
 app.use("/api", routes);
 
-// Serve frontend in production
+// Production: serve Vite build for same-domain hosting
 if (process.env.NODE_ENV === "production") {
   app.disable("x-powered-by");
   const dist = path.resolve(__dirname, "../dist");
   app.use(express.static(dist));
+  // Fallback all non-API routes to SPA index
   app.get("*", (req, res, next) => {
-    if (req.path.startsWith("/api")) return next();
+    if (req.path.startsWith("/api")) return next()
     return res.sendFile(path.join(dist, "index.html"));
-  });
+  })
 }
 
 // Error handling
-app.use(errorHandler);
+app.use(errorHandler)
 
-// Connect to DB (once per cold start)
-const MONGODB_URI = process.env.MONGODB_URI;
+const PORT = process.env.PORT || 3000;
+const MONGODB_URI = process.env.MONGODB_URI
 
 connectDB(MONGODB_URI)
   .then(() => {
-    console.log("[API] DB connected successfully");
+    app.listen(PORT, () => {
+      console.log(`[API] listening on http://localhost:${PORT}`)
+    })
   })
   .catch((err) => {
-    console.error("[API] DB connection failed", err);
-  });
+    console.error("[API] DB connection failed", err)
+    process.exit(1)
+  })
 
-// ✅ Export the Express app for Vercel serverless
-export default app;
+  
