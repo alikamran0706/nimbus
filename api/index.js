@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
-import path from "path";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import path from "path";
 import { fileURLToPath } from "url";
 
 import { connectDB } from "./db/connect.js";
@@ -28,29 +28,24 @@ app.use(cookieParser());
 // API Routes
 app.use("/api", routes);
 
-// Serve frontend in production
-if (process.env.NODE_ENV === "production") {
-  app.disable("x-powered-by");
-  app.use(express.static(path.join(__dirname, '../../dist')));
-  
-  app.get("*", (req, res, next) => {
-    if (req.path.startsWith("/api")) return next();
-    res.sendFile(path.join(__dirname, '../../dist/index.html'));
-  });
-}
+// Serve static files from dist (Vite build output)
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Catch-all handler - serve React app for all non-API routes
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ error: 'API route not found' });
+  }
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
 
 app.use(errorHandler);
 
-// Database connection with serverless optimization
+// Database connection
 let isConnected = false;
-let connectionPromise = null;
-
 async function initDB() {
   if (!isConnected) {
-    if (!connectionPromise) {
-      connectionPromise = connectDB(process.env.MONGODB_URI);
-    }
-    await connectionPromise;
+    await connectDB(process.env.MONGODB_URI);
     isConnected = true;
     console.log("[API] DB connected");
   }
@@ -58,9 +53,11 @@ async function initDB() {
 
 // Vercel serverless function handler
 export default async function handler(req, res) {
-  // Initialize DB on first request
-  await initDB();
+  try {
+    await initDB();
+  } catch (error) {
+    console.error('DB connection error:', error);
+  }
   
-  // Pass request to Express app
   return app(req, res);
 }
