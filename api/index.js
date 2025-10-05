@@ -9,7 +9,7 @@ import { fileURLToPath } from "url";
 
 import { connectDB } from "./db/connect.js";
 import routes from "./routes/index.js";
-import { errorHandler } from "./middleware/error-handler.js";
+import { errorHandler } from "./middleware/error-handler.js"; 
 
 dotenv.config();
 
