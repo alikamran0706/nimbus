@@ -1,55 +1,66 @@
 import dotenv from "dotenv";
-
 import path from "path";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import cors from "cors"
+import cors from "cors";
+import { fileURLToPath } from "url";
 
 import { connectDB } from "./db/connect.js";
 import routes from "./routes/index.js";
 import { errorHandler } from "./middleware/error-handler.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 dotenv.config();
 
 const app = express();
 
+// Middleware
 app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
-// Mount API under /api
+// API Routes
 app.use("/api", routes);
 
-// Production: serve Vite build for same-domain hosting
+// Serve frontend in production
 if (process.env.NODE_ENV === "production") {
   app.disable("x-powered-by");
-  const dist = path.resolve(__dirname, "../dist");
-  app.use(express.static(dist));
-  // Fallback all non-API routes to SPA index
+  app.use(express.static(path.join(__dirname, '../../dist')));
+  
   app.get("*", (req, res, next) => {
-    if (req.path.startsWith("/api")) return next()
-    return res.sendFile(path.join(dist, "index.html"));
-  })
+    if (req.path.startsWith("/api")) return next();
+    res.sendFile(path.join(__dirname, '../../dist/index.html'));
+  });
 }
 
-// Error handling
-app.use(errorHandler)
+app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
-const MONGODB_URI = process.env.MONGODB_URI
+// Database connection with serverless optimization
+let isConnected = false;
+let connectionPromise = null;
 
-connectDB(MONGODB_URI)
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`[API] listening on http://localhost:${PORT}`)
-    })
-  })
-  .catch((err) => {
-    console.error("[API] DB connection failed", err)
-    process.exit(1)
-  })
+async function initDB() {
+  if (!isConnected) {
+    if (!connectionPromise) {
+      connectionPromise = connectDB(process.env.MONGODB_URI);
+    }
+    await connectionPromise;
+    isConnected = true;
+    console.log("[API] DB connected");
+  }
+}
 
+// Vercel serverless function handler
+export default async function handler(req, res) {
+  // Initialize DB on first request
+  await initDB();
   
+  // Pass request to Express app
+  return app(req, res);
+}
