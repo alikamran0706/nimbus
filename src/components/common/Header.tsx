@@ -40,7 +40,7 @@ export const Header = ({ onMenuClick }: HeaderProps) => {
               </svg>
             </button>
 
-            <img src="/src/assets/images/logo.png" alt="Nimbus" className="h-8 w-auto" />
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo%201-ipIH4sCpFZkBtk5klUe1etfgg1WV6H.png" alt="Nimbus" className="h-8 w-auto" />
             <span className="text-lg sm:text-xl font-semibold text-gray-900">Nimbus</span>
           </div>
 
