@@ -25,19 +25,17 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
-// API Routes - all API calls go through your Express router
+// API Routes
 app.use("/api", routes);
 
 // Serve static files from Vite build
 app.use(express.static(path.join(__dirname, '../dist')));
 
-// Catch-all handler for SPA - important for React Router
+// Catch-all handler for SPA
 app.get('*', (req, res) => {
-  // Don't handle API routes here
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: 'API route not found' });
   }
-  // Serve React app for all other routes
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
