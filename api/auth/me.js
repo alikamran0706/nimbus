@@ -10,5 +10,5 @@ export default async function handler(req, res) {
 //   const userId = verifyAuth(req, res)
 //   if (!userId) return 
 
-  await AuthController.me(req, res, userId)
+  await AuthController.me(req, res)
 }
