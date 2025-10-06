@@ -60,13 +60,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
               className="rounded-md p-2 text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-600"
               aria-label="Close sidebar"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                  fillRule="evenodd"
-                  d="M10 8.586l4.95-4.95 1.414 1.414L11.414 10l4.95 4.95-1.414 1.414L10 11.414l-4.95 4.95L5.05 3.636 10 8.586z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              X
             </button>
           </div>
           <NavList onNavigate={onClose} />
