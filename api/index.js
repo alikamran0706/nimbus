@@ -7,7 +7,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import { connectDB } from "./db/connect.js";
+// import { connectDB } from "./db/connect.js";
 import routes from "./routes/index.js";
 import { errorHandler } from "./middleware/error-handler.js";
 
@@ -42,19 +42,19 @@ app.get('*', (req, res) => {
 app.use(errorHandler);
 
 // Database connection
-let isConnected = false;
-async function initDB() {
-  if (!isConnected) {
-    await connectDB(process.env.MONGODB_URI);
-    isConnected = true;
-    console.log("[API] DB connected");
-  }
-}
+// let isConnected = false;
+// async function initDB() {
+//   if (!isConnected) {
+//     await connectDB(process.env.MONGODB_URI);
+//     isConnected = true;
+//     console.log("[API] DB connected");
+//   }
+// }
 
 // Single serverless function export
 export default async function handler(req, res) {
   try {
-    await initDB();
+    // await initDB();
   } catch (error) {
     console.error('DB connection error:', error);
   }
