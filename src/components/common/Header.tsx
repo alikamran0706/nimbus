@@ -38,10 +38,11 @@ export const Header = ({ onMenuClick }: HeaderProps) => {
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
-            </button> 
+            </button>
 
-            <div className="flex flex-col gap-3">
-              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo%201-ipIH4sCpFZkBtk5klUe1etfgg1WV6H.png" alt="Nimbus" className="h-8 w-auto" />
+            <div className="flex flex-col gap-2 my-2">
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo%201-ipIH4sCpFZkBtk5klUe1etfgg1WV6H.png"
+                alt="Nimbus" className="h-auto w-12" />
               <span className="text-lg sm:text-xl font-semibold text-gray-900">Nimbus</span>
             </div>
           </div>
