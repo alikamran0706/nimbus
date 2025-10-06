@@ -1,7 +1,5 @@
 import type { LoginCredentials, RegisterCredentials, User, ApiResponse } from '../types'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
-
 class AuthService {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const token = localStorage.getItem('token')
@@ -17,7 +15,7 @@ class AuthService {
       ...options,
     }  
 
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, config)
+    const response = await fetch(`${endpoint}`, config)
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({ message: 'Network error' }))
