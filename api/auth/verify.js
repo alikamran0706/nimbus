@@ -1,4 +1,4 @@
-import { AuthController } from "../../server/controllers/auth.controller"
+import { AuthController } from "../../server/controllers/auth.controller.js"
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
