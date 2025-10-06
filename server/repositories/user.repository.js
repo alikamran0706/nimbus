@@ -1,6 +1,7 @@
 import { UserModel } from "../models/User.js"
 import nodemailer from "nodemailer"
 import dotenv from "dotenv";
+import { connectDB } from "../db/connect.js";
 
 dotenv.config();
 
@@ -20,15 +21,19 @@ function generateVerificationCode() {
 
 export const UserRepository = {
   async findByEmail(email) {
+    await connectDB();
     return UserModel.findOne({ email })
   },
   async findById(id) {
+    await connectDB();
     return UserModel.findById(id)
   },
 
   async create(data) {
     const verificationCode = generateVerificationCode();
     const verificationCodeExpires = new Date(Date.now() + 10 * 60 * 1000);
+
+    await connectDB();
     const user = await UserModel.create({
       ...data,
       verificationCode,
@@ -49,6 +54,7 @@ export const UserRepository = {
   },
 
   async resend(email) {
+    await connectDB();
     const user = await UserModel.findOne({ email });
     if (!user) {
       throw new Error("User not found");
@@ -79,6 +85,7 @@ export const UserRepository = {
   },
 
   async verifyByEmail(email, code) {
+    await connectDB();
     const user = await UserModel.findOne({ email });
 
     if (!user) {
