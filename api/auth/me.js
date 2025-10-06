@@ -1,5 +1,5 @@
 import { AuthController } from "../../server/controllers/auth.controller.js"
-// import { verifyAuth } from "../../server/middleware/auth.js"
+import { verifyAuth } from "../../server/middleware/auth.js"
 
 
 export default async function handler(req, res) {
@@ -7,8 +7,8 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Method Not Allowed" })
   }
 
-//   const userId = verifyAuth(req, res)
-//   if (!userId) return 
+  const userId = verifyAuth(req, res)
+  if (!userId) return 
 
-  await AuthController.me(req, res)
+  await AuthController.me(req, res, userId)
 }
