@@ -6,8 +6,6 @@ class AuthService {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const token = localStorage.getItem('token')
 
-    console
-
     const config: RequestInit = {
       headers: {
         'Content-Type': 'application/json',
