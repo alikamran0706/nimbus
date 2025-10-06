@@ -40,8 +40,10 @@ export const Header = ({ onMenuClick }: HeaderProps) => {
               </svg>
             </button>
 
-            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo%201-ipIH4sCpFZkBtk5klUe1etfgg1WV6H.png" alt="Nimbus" className="h-8 w-auto" />
-            <span className="text-lg sm:text-xl font-semibold text-gray-900">Nimbus</span>
+            <div className="flex flex-col gap-3">
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo%201-ipIH4sCpFZkBtk5klUe1etfgg1WV6H.png" alt="Nimbus" className="h-8 w-auto" />
+              <span className="text-lg sm:text-xl font-semibold text-gray-900">Nimbus</span>
+            </div>
           </div>
 
           <div className="flex items-center space-x-4">
