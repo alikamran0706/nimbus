@@ -113,43 +113,45 @@ export function Communications() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Main Content */}
-      <div className="p-4">
+      <div className="p-4 max-w-7xl mx-auto">
+        {/* Header Navigation */}
         <div className="bg-white border-b border-gray-100 p-4 rounded-tr-lg rounded-tl-lg">
           <Link
             to="/dashboard"
-            className="inline-flex items-center gap-2 text-red-600 hover:text-premary-600"
+            className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 text-sm sm:text-base"
           >
             <img src={'/images/back.png'} alt="Back" className="h-5 w-5" />
             Back to Dashboard
           </Link>
         </div>
 
-        <div className="bg-white shadow-sm p-8">
-          {/* Header Section */}
-          <div className="flex items-start justify-between mb-6">
+        {/* Main Panel */}
+        <div className="bg-white shadow-sm p-4 sm:p-6 rounded-b-lg">
+          {/* Page Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
             <div>
-              <h1 className="text-2xl font-semibold text-gray-900 mb-1">Communications</h1>
-              <p className="text-gray-500">
+              <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Communications</h1>
+              <p className="text-gray-500 text-sm sm:text-base">
                 All your messages, emails, and notifications in one place
               </p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               <button
                 onClick={markAllAsRead}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg border border-gray-300"
+                className="px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg border border-gray-300 w-full sm:w-auto"
               >
                 Mark All Read
               </button>
-              <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+              <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 w-full sm:w-auto">
                 Compose
               </button>
             </div>
           </div>
 
-          {/* Search and Filters */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 relative">
-              Search
+          {/* Search & Filters */}
+          <div className="flex flex-col md:flex-row md:items-center gap-3 mb-6">
+            <div className="relative w-full md:flex-1">
+              <span className="absolute left-3 top-2.5 text-gray-400 text-sm">🔍</span>
               <input
                 type="text"
                 placeholder="Search communications"
@@ -158,36 +160,31 @@ export function Communications() {
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
               />
             </div>
-            <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
-              Type: all
-            </button>
-            <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
-              Filter All
-            </button>
+            <div className="flex flex-wrap gap-2">
+              <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                Type: All
+              </button>
+              <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                Filter All
+              </button>
+            </div>
           </div>
 
-          {/* Messages List */}
+          {/* Messages */}
           <div className="space-y-4">
             {messages.map(message => (
               <div
                 key={message.id}
-                className={`flex items-start gap-4 p-4 rounded-lg border ${
-                  message.isRead ? 'bg-white border-gray-200' : 'bg-red-50 border-red-100'
-                }`}
+                className={`flex flex-col sm:flex-row sm:items-start gap-4 p-4 rounded-lg border ${message.isRead ? 'bg-white border-gray-200' : 'bg-red-50 border-red-100'
+                  }`}
               >
                 {/* Icon */}
                 <div
-                  className={`w-10 h-10 rounded flex items-center justify-center flex-shrink-0 ${
-                    message.icon === 'email' ? 'bg-blue-100' : 'bg-green-100'
-                  }`}
+                  className={`w-10 h-10 rounded flex items-center justify-center flex-shrink-0 ${message.icon === 'email' ? 'bg-blue-100' : 'bg-green-100'
+                    }`}
                 >
                   {message.icon === 'email' ? (
-                    <svg
-                      className="w-5 h-5 text-blue-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
+                    <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -196,12 +193,7 @@ export function Communications() {
                       />
                     </svg>
                   ) : (
-                    <svg
-                      className="w-5 h-5 text-green-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
+                    <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -212,37 +204,36 @@ export function Communications() {
                   )}
                 </div>
 
-                {/* Content */}
+                {/* Message Content */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-4 mb-1">
-                    <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-1">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <h3 className="font-semibold text-gray-900">{message.company}</h3>
-                      <span className="text-sm text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                      <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
                         {message.type}
                       </span>
                     </div>
-                    <span className="text-sm text-gray-500 whitespace-nowrap">{message.date}</span>
+                    <span className="text-sm text-gray-500">{message.date}</span>
                   </div>
                   <p className="font-medium text-gray-900 mb-1">{message.position}</p>
                   <p className="text-gray-600 text-sm">{message.preview}</p>
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-2 flex-shrink-0">
+                <div className="flex items-center gap-2 mt-2 sm:mt-0">
                   <button
                     onClick={() => toggleStar(message.id)}
-                    className="p-1 hover:bg-gray-100 rounded"
+                    className="p-1 hover:bg-gray-100 rounded text-sm"
                   >
-                    Star
+                    ⭐
                   </button>
-                  <button className="p-1 hover:bg-gray-100 rounded">Trash2</button>
+                  <button className="p-1 hover:bg-gray-100 rounded text-sm">🗑️</button>
                 </div>
 
-                {/* Mark as Read */}
                 {!message.isRead && (
                   <button
                     onClick={() => markAsRead(message.id)}
-                    className="text-sm text-red-600 hover:text-red-700 whitespace-nowrap ml-4"
+                    className="text-sm text-red-600 hover:text-red-700 whitespace-nowrap"
                   >
                     ✓ Mark as read
                   </button>
@@ -252,35 +243,27 @@ export function Communications() {
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
-            <p className="text-sm text-gray-600">Showing 1 to 7 of 7 results</p>
-            <div className="flex items-center gap-2">
-              <button className="p-2 border border-gray-300 rounded hover:bg-gray-50">
-                ChevronLeft
-              </button>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-6 pt-6 border-t border-gray-200 gap-2">
+            <p className="text-sm text-gray-600 text-center sm:text-left">
+              Showing 1 to {messages.length} of {messages.length} results
+            </p>
+            <div className="flex items-center justify-center gap-2">
+              <button className="p-2 border border-gray-300 rounded hover:bg-gray-50">⬅️</button>
               <button className="px-3 py-1 bg-red-600 text-white rounded">1</button>
-              <button className="p-2 border border-gray-300 rounded hover:bg-gray-50">
-                ChevronRight
-              </button>
+              <button className="p-2 border border-gray-300 rounded hover:bg-gray-50">➡️</button>
             </div>
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 mt-12 py-6">
-        <div className="max-w-7xl mx-auto px-8 flex items-center justify-between text-sm text-gray-600">
-          <p>© 2025 Nimbus. All rights reserved. Version 1.0.0</p>
-          <div className="flex items-center gap-6">
-            <Link to="/help" className="hover:text-gray-900">
-              Help Center
-            </Link>
-            <Link to="/contact" className="hover:text-gray-900">
-              Contact Us
-            </Link>
-            <Link to="/terms" className="hover:text-gray-900">
-              Terms & Conditions
-            </Link>
+      <footer className="bg-white border-t border-gray-200 mt-12 py-6 px-4">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-600">
+          <p className="text-center sm:text-left">© 2025 Nimbus. All rights reserved. Version 1.0.0</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link to="/help" className="hover:text-gray-900">Help Center</Link>
+            <Link to="/contact" className="hover:text-gray-900">Contact Us</Link>
+            <Link to="/terms" className="hover:text-gray-900">Terms & Conditions</Link>
           </div>
         </div>
       </footer>
