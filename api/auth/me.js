@@ -1,5 +1,5 @@
 import { AuthController } from "../../server/controllers/auth.controller.js"
-import { verifyAuth } from "../../server/middleware/auth.js"
+// import { verifyAuth } from "../../server/middleware/auth.js"
 
 
 export default async function handler(req, res) {
