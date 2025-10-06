@@ -1,6 +1,6 @@
 import type { LoginCredentials, RegisterCredentials, User, ApiResponse } from '../types'
 
-const API_BASE_URL = window.location.origin;
+const API_BASE_URL = `${window.location.origin}/api`;
 
 class AuthService {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
