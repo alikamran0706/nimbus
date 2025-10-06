@@ -1,91 +1,82 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink } from "react-router-dom"
 
-export const Sidebar = () => {
+type SidebarProps = {
+  isOpen: boolean
+  onClose: () => void
+}
+
+const navigation = [
+  { name: "Dashboard", href: "/dashboard" },
+  { name: "Profile", href: "/profile" },
+  { name: "Resume", href: "/resume" },
+  { name: "Communications", href: "/communications" },
+  { name: "Settings", href: "/settings" },
+]
+
+function NavList({ onNavigate }: { onNavigate?: () => void }) {
   return (
-    <div className="w-64 bg-white shadow-sm border-r border-gray-200 min-h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex-shrink-0">
-        <div className="p-6">
-          <nav className="space-y-2">
+    <nav className="px-4 py-6">
+      <ul className="space-y-2">
+        {navigation.map((item) => (
+          <li key={item.name}>
             <NavLink
-              to="/applications"
+              to={item.href}
+              onClick={onNavigate}
               className={({ isActive }) =>
-                isActive
-                  ? 'flex items-center gap-3 px-4 py-3 bg-red-50 text-red-600 rounded-lg font-medium'
-                  : 'flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg'
+                `block px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  isActive ? "bg-red-50 text-red-700" : "text-gray-700 hover:bg-gray-50"
+                }`
               }
             >
-              {({ isActive }) => (
-                <>
-                  <img
-                    src={isActive ? '/images/active-application.png' : '/images/application.png'}
-                    alt="Applications"
-                    className="h-5 w-5"
-                  />
-                  Applications
-                </>
-              )}
+              {item.name}
             </NavLink>
-            <NavLink
-              to="/resume"
-              className={({ isActive }) =>
-                isActive
-                  ? 'flex items-center gap-3 px-4 py-3 bg-red-50 text-red-600 rounded-lg font-medium'
-                  : 'flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg'
-              }
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
+  return (
+    <>
+      {/* Mobile overlay + drawer */}
+      <div className={`md:hidden fixed inset-0 z-40 ${isOpen ? "" : "pointer-events-none"}`}>
+        <div
+          className={`absolute inset-0 bg-black/30 transition-opacity ${isOpen ? "opacity-100" : "opacity-0"}`}
+          onClick={onClose}
+          aria-hidden="true"
+        />
+        <aside
+          id="mobile-sidebar"
+          className={`absolute inset-y-0 left-0 w-72 bg-white border-r border-gray-200 shadow-lg transform transition-transform ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="flex items-center justify-between px-4 h-14 border-b">
+            <span className="text-base font-semibold">Menu</span>
+            <button
+              onClick={onClose}
+              className="rounded-md p-2 text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-600"
+              aria-label="Close sidebar"
             >
-              {({ isActive }) => (
-                <>
-                  <img
-                    src={isActive ? '/images/active-resume.png' : '/images/resume.png'}
-                    alt="Resume"
-                    className="h-[18px] w-[18px]"
-                  />
-                  Resume
-                </>
-              )}
-            </NavLink>
-            <NavLink
-              to="/communications"
-              className={({ isActive }) =>
-                isActive
-                  ? 'flex items-center gap-3 px-4 py-3 bg-red-50 text-red-600 rounded-lg font-medium'
-                  : 'flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg'
-              }
-            >
-             {({ isActive }) => (
-                <>
-                  <img
-                    src={isActive ? '/images/active-message.png' : '/images/message.png'}
-                    alt="Resume"
-                    className="h-[18px] w-[18px]"
-                  />
-                  Message
-                </>
-              )}
-            </NavLink>
-            <NavLink
-              to="/settings"
-              className={({ isActive }) =>
-                isActive
-                  ? 'flex items-center gap-3 px-4 py-3 bg-red-50 text-red-600 rounded-lg font-medium'
-                  : 'flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg'
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  <img
-                    src={isActive ? '/images/active-setting.png' : '/images/setting.png'}
-                    alt="Resume"
-                    className="h-[18px] w-[18px]"
-                  />
-                  Setting
-                </>
-              )}
-            </NavLink>
-          </nav>
-        </div>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M10 8.586l4.95-4.95 1.414 1.414L11.414 10l4.95 4.95-1.414 1.414L10 11.414l-4.95 4.95L5.05 3.636 10 8.586z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+          <NavList onNavigate={onClose} />
+        </aside>
+      </div>
+
+      {/* Desktop sidebar */}
+      <aside className="hidden md:block w-64 bg-white shadow-sm border-r border-gray-200 min-h-[calc(100vh-4rem)]">
+        <NavList />
       </aside>
-    </div>
+    </>
   )
 }
