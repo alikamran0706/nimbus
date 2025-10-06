@@ -15,8 +15,8 @@ export const AuthController = {
     res.json(out)
   },
   me: async (req, res) => {
-    const user = await AuthAppService.me(req.userId)
-    res.json(user)
+    // const user = await AuthAppService.me(req.userId)
+    res.json('user')
   },
   resend: async (req, res) => {
      const { email } = req.body;
