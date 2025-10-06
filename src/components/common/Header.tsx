@@ -45,9 +45,12 @@ export const Header = ({ onMenuClick }: HeaderProps) => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <span className="hidden sm:inline text-sm text-gray-700">
-              Welcome, {user?.firstName} {user?.lastName}
-            </span>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-semibold">
+                R
+              </div>
+              <span className="text-gray-700">Candidate</span>
+            </div>
             <button onClick={handleLogout} className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
               Sign out
             </button>
