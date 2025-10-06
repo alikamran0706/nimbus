@@ -4,6 +4,9 @@ import path from "path"
 
 // https://vitejs.dev/config/
 export default defineConfig({
+   server: {
+    port: process.env.PORT as unknown as number,
+  },
   plugins: [react()],
   resolve: {
     alias: {
