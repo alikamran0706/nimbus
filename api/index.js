@@ -25,17 +25,19 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
-// API Routes
+// API Routes - all API calls go through your Express router
 app.use("/api", routes);
 
-// Serve static files from dist (Vite build output)
+// Serve static files from Vite build
 app.use(express.static(path.join(__dirname, '../dist')));
 
-// Catch-all handler - serve React app for all non-API routes
+// Catch-all handler for SPA - important for React Router
 app.get('*', (req, res) => {
-  if (req.path.startsWith('/api')) {
+  // Don't handle API routes here
+  if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: 'API route not found' });
   }
+  // Serve React app for all other routes
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
@@ -51,7 +53,7 @@ async function initDB() {
   }
 }
 
-// Vercel serverless function handler
+// Single serverless function export
 export default async function handler(req, res) {
   try {
     await initDB();
